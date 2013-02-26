@@ -7,8 +7,8 @@ Python implementation Broadcast Copy https://github.com/jwilberding/bcp
 
 To make file availabe for copying:
 
-  	$ ./bcp filename
+  	$ ./pybcp filename
 
 To receive the file:
 
-	$ ./bcp
+	$ ./pybcp
