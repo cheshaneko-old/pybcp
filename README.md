@@ -1,7 +1,7 @@
 pybcp
 =====
 
-Python implementation Broadcast Copy https://github.com/jwilberding/bcp
+Python implementation Broadcast Copy (bcp) https://github.com/jwilberding/bcp
 
 # Usage
 
