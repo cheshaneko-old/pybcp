@@ -2,7 +2,6 @@
 
 import sys
 import os
-import time
 from socket import *
 
 BROADCAST_PORT = 4950
@@ -51,6 +50,7 @@ def recvfile():
     tcpsock.bind(('', BCP_TCP_PORT))
     tcpsock.listen(1);
     conn, addr = tcpsock.accept()
+    print 'Incoming connection from: ' + str(addr[0]) + ':' + str(addr[1])
     array = bytearray()
     i = 0
     while i!=BUF_SIZE:
@@ -59,19 +59,27 @@ def recvfile():
         i = i + len(tmp)
     filename, filesize = str(array).split(' ')
     filesize = int(filesize.rstrip('\0'))
-    f = open(filename+'test_new', 'wb')
+    if os.path.exists(filename):
+        filename = raw_input(str(filename) + ' already exists. Input new file name:\n')
+    filename = str(filename)
+    f = open(filename, 'wb')
     i = 0
     while i!=filesize:
         buf = conn.recv(BUF_SIZE)
         i = i + len(buf)
         f.write(buf)
+        sys.stdout.write('\rReceive: [' + str(i) + '/' + str(filesize) + ']')
+    sys.stdout.write('\n')
     f.close()
     conn.close()
     tcpsock.close()
     
 if len(sys.argv) > 1:
+    print 'Listening for request..'
     addr = recvBroadcast()
+    print 'Sending file to: ' + str(addr[0]) + ':' + str(addr[1]) 
     sendfile(sys.argv[1], addr)
 else:
+    print 'Requesting file..'
     sendBroadcast()
     recvfile()
